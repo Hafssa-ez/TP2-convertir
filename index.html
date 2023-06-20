@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Convert Currency</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>Convert Currency</h1>
+  
+  <form id="convertForm">
+    <input type="number" id="amount" placeholder="Amount" required>
+    <select id="baseCurrency" required>
+      <option value="EUR">France (EUR)</option>
+      <!-- Ajoutez d'autres devises de votre choix -->
+    </select>
+    <select id="targetCurrency" required>
+      <option value="USD">US Dollars (USD)</option>
+      <!-- Ajoutez d'autres devises de votre choix -->
+    </select>
+    <button type="submit">Convert Currency</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    $(document).ready(function() {
+      $('#convertForm').submit(function(e) {
+        e.preventDefault();
+        var amount = $('#amount').val();
+        var baseCurrency = $('#baseCurrency').val();
+        var targetCurrency = $('#targetCurrency').val();
+
+        $.ajax({
+          url: 'https://api.fixer.io/latest',
+          method: 'GET',
+          data: {
+            base: baseCurrency,
+            symbols: targetCurrency
+          },
+          success: function(response) {
+            var conversionRate = response.rates[targetCurrency];
+            var convertedAmount = (amount * conversionRate).toFixed(2);
+            $('#result').text(convertedAmount);
+          },
+          error: function() {
+            $('#result').text('Error occurred while fetching data.');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
