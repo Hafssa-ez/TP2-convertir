@@ -12,11 +12,14 @@
     <input type="number" id="amount" placeholder="Amount" required>
     <select id="baseCurrency" required>
       <option value="EUR">France (EUR)</option>
-      <!-- Ajoutez d'autres devises de votre choix -->
+      <option value="MAD">Maroc (DH)</option>
+      <option value="USD">US Dollars (usd)</option>
     </select>
     <select id="targetCurrency" required>
       <option value="USD">US Dollars (USD)</option>
-      <!-- Ajoutez d'autres devises de votre choix -->
+         <option value="EUR">France (EUR)</option>
+      <option value="MAD">Maroc (DH)</option>
+     
     </select>
     <button type="submit">Convert Currency</button>
   </form>
@@ -32,16 +35,12 @@
         var targetCurrency = $('#targetCurrency').val();
 
         $.ajax({
-          url: 'https://api.fixer.io/latest',
+          url: 'https://api.exchangerate-api.com/v4/latest/' + baseCurrency,
           method: 'GET',
-          data: {
-            base: baseCurrency,
-            symbols: targetCurrency
-          },
           success: function(response) {
             var conversionRate = response.rates[targetCurrency];
             var convertedAmount = (amount * conversionRate).toFixed(2);
-            $('#result').text(convertedAmount);
+            $('#result').text(convertedAmount + ' ' + targetCurrency);
           },
           error: function() {
             $('#result').text('Error occurred while fetching data.');
